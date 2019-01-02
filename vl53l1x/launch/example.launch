@@ -1,0 +1,14 @@
+<launch>
+    <node pkg="vl53l1x" type="vl53l1x_node" name="vl53l1x" clear_params="true">
+        <param name="mode" value="3"/>
+        <param name="i2c_bus" value="1"/>
+        <param name="i2c_address" value="0x29"/>
+        <param name="poll_rate" value="100"/>
+        <param name="timing_budget" value="0.1"/>
+        <param name="offset" value="0.0"/>
+        <param name="frame_id" value=""/>
+        <param name="field_of_view" value="0.471239"/>
+        <param name="min_range" value="0.0"/>
+        <param name="max_range" value="4.0"/>
+    </node>
+</launch>

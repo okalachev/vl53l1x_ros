@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="vl53l1x" type="vl53l1x_node" name="vl53l1x" clear_params="true">
+        <param name="timing_budget" value="0.14"/>
+    </node>
+</launch>
