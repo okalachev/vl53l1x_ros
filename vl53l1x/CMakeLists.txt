@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(vl53l1x_rangefinder)
+project(vl53l1x)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 #add_compile_options(-std=c++11)
@@ -103,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES vl53l1x_rangefinder
+#  LIBRARIES vl53l1x
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
