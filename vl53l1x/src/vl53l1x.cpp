@@ -48,12 +48,8 @@ int main(int argc, char **argv)
 		ros::shutdown();
 	}
 
+	// The minimum inter-measurement period must be longer than the timing budget + 4 ms (*)
 	double inter_measurement_period = timing_budget + 0.004;
-
-	if (timing_budget >= 0.4) {
-		// Tests showed timing budget >= 0.4 requires larger inter-measurement period somehow
-		inter_measurement_period += 0.003;
-	}
 
 	// Setup I2C bus
 	i2c_setup(i2c_bus, i2c_address);
@@ -72,11 +68,19 @@ int main(int argc, char **argv)
 	VL53L1_SetDeviceAddress(&dev, i2c_address << 1);
 	VL53L1_SetDistanceMode(&dev, mode);
 	VL53L1_SetMeasurementTimingBudgetMicroSeconds(&dev, round(timing_budget * 1e6));
-	VL53L1_SetInterMeasurementPeriodMilliSeconds(&dev, round(inter_measurement_period * 1e3));
-	dev_error = VL53L1_StartMeasurement(&dev);
 
+	// Start sensor
+	for (int i = 0; i < 100; i++) {
+		VL53L1_SetInterMeasurementPeriodMilliSeconds(&dev, round(inter_measurement_period * 1e3));
+		dev_error = VL53L1_StartMeasurement(&dev);
+		if (dev_error == VL53L1_ERROR_INVALID_PARAMS) {
+			inter_measurement_period += 0.001; // Increase inter_measurement_period to satisfy condition (*)
+		} else break;
+	}
+
+	// Check for errors after start
 	if (dev_error != VL53L1_ERROR_NONE) {
-		ROS_FATAL("Can't start measurement: error %d", dev_error);
+		ROS_FATAL("VL53L1X: Can't start measurement: error %d", dev_error);
 		ros::shutdown();
 	}
 
