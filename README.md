@@ -6,6 +6,10 @@ The code is based on the [STM VL53L1X API library](https://www.st.com/content/st
 
 ## Installation
 
+### From package
+
+For Raspberry Pi, there exist prebuilt Debian packages. For installation, [get the package](http://coex.space/rpi-ros-kinetic/pool/main/r/ros-kinetic-vl53l1x/) to the Raspberry and install it with `dpkg -i <package-name>.deb`.
+
 ### Manual
 
 1. Clone the repository into your Catkin workspace:
