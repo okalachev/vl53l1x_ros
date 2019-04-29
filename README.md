@@ -26,6 +26,32 @@ For Raspberry Pi, there exist prebuilt Debian packages. For installation, [get t
     catkin_make -DCATKIN_WHITELIST_PACKAGES="vl53l1x"
     ```
 
+## Quick start
+
+Run with the default settings:
+
+```bash
+rosrun vl53l1x vl53l1x_node
+```
+
+Run the example [.launch-file](vl53l1x/launch/example.launch):
+
+```bash
+roslaunch vl53l1x example.launch
+```
+
+See the ranging results:
+
+```bash
+rostopic echo /vl53l1x/range
+```
+
+See the ranging rate:
+
+```bash
+rostopic hz /vl53l1x/range
+```
+
 ## Parameters
 
 All parameters are optional.
@@ -60,32 +86,6 @@ See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1
 ### Published
 
 * `~range` ([*sensor_msgs/Range*](http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Range.html)) – resulting measurement.
-
-## Examples
-
-Run with the default settings:
-
-```bash
-rosrun vl53l1x vl53l1x_node
-```
-
-Run the example [.launch-file](vl53l1x/launch/example.launch):
-
-```bash
-roslaunch vl53l1x example.launch
-```
-
-See the ranging results:
-
-```bash
-rostopic echo /vl53l1x/range
-```
-
-See the ranging rate:
-
-```bash
-rostopic hz /vl53l1x/range
-```
 
 ## Copyright
 
