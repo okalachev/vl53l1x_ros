@@ -34,12 +34,6 @@ Run with the default settings:
 rosrun vl53l1x vl53l1x_node
 ```
 
-Run the example [.launch-file](vl53l1x/launch/example.launch):
-
-```bash
-roslaunch vl53l1x example.launch
-```
-
 See the ranging results:
 
 ```bash
@@ -54,9 +48,7 @@ rostopic hz /vl53l1x/range
 
 ## Parameters
 
-All parameters are optional.
-
-<!-- * `~rate` (*double*) – measurement rate, *Hz* (default: 20). -->
+All parameters are optional. Check the [`launch`](https://github.com/okalachev/vl53l1x_ros/tree/master/vl53l1x/launch) folder for launch-file templates.
 
 * `~i2c_bus` (*int*) – I2C bus number (default: 1).
 * `~i2c_address` (*int*) – I2C address (default: 0x29).
