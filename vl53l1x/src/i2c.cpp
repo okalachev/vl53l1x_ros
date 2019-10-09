@@ -56,6 +56,7 @@ bool i2c_readRegisterWord(uint16_t reg, uint16_t *pdata)
 		return false;
 	}
 	*pdata = ntohs(*pdata); // big endian to little endian
+	return true;
 }
 
 bool i2c_writeRegisterMulti(uint16_t reg, size_t count, void *pdata)
