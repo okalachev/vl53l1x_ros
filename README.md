@@ -56,12 +56,12 @@ All parameters are optional. Check the [`launch`](https://github.com/okalachev/v
 * `~timing_budget` (*double*) – timing budget for measurements, *s* (default: 0.1)
 * `~poll_rate` (*double*) – polling data rate, *Hz* (default: 100).
 * `~offset` (*float*) – offset to be automatically added to measurement value, *m* (default: 0.0).
-* `~frame_id` (*string*) – frame id for output `Range` messages (deafult: "").
+* `~frame_id` (*string*) – frame id for output `Range` messages (default: "").
 * `~field_of_view` (*float*) – field of view for output `Range` messages, *rad* (default: 0.471239).
 * `~min_range` (*float*) – minimum range for output `Range` messages, *m* (default: 0.0).
 * `~max_range` (*float*) – maximum range for `Range` output messages, *m* (default: 4.0).
 
-`timing_budget` is the time VL53L1X uses for ranging. The larger this time, the more accurate is measument and the larger is maximum distance. Timing budget can be set from *0.02 s* up to *1 s*.
+`timing_budget` is the time VL53L1X uses for ranging. The larger this time, the more accurate is measurement and the larger is maximum distance. Timing budget can be set from *0.02 s* up to *1 s*.
 
 * *0.02 s* is the minimum timing budget and can be used only in *Short* distance mode.
 * *0.033 s* is the minimum timing budget which can work for all distance modes.
@@ -69,7 +69,7 @@ All parameters are optional. Check the [`launch`](https://github.com/okalachev/v
 
 The resulting measurement rate is *1 / (timing budget + 0.004) Hz*.
 
-`mode` is one of three distance modes, with the timing budget of *0.1 s*, *Short*, *Medimum* and *Long* modes have maximum distances of 136, 290, and 360 cm, respectively.
+`mode` is one of three distance modes, with the timing budget of *0.1 s*, *Short*, *Medium* and *Long* modes have maximum distances of 136, 290, and 360 cm, respectively.
 
 See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1x.pdf) for more information on mode and timing budget.
 
