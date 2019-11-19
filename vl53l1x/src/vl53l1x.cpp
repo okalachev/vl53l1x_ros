@@ -64,7 +64,6 @@ int main(int argc, char **argv)
 	VL53L1_WaitDeviceBooted(&dev);
 	VL53L1_DataInit(&dev);
 	VL53L1_StaticInit(&dev);
-	VL53L1_PerformRefSpadManagement(&dev);
 
 	// Setup sensor
 	VL53L1_SetXTalkCompensationEnable(&dev, 0); // Disable crosstalk compensation
