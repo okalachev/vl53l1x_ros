@@ -32,10 +32,13 @@ int main(int argc, char **argv)
 	// Read parameters
 	int mode, i2c_bus, i2c_address;
 	double poll_rate, timing_budget, offset;
+	bool ignore_range_status;
+
 	nh_priv.param("mode", mode, 3);
 	nh_priv.param("i2c_bus", i2c_bus, 1);
 	nh_priv.param("i2c_address", i2c_address, 0x29);
 	nh_priv.param("poll_rate", poll_rate, 100.0);
+	nh_priv.param("ignore_range_status", ignore_range_status, false);
 	nh_priv.param("timing_budget", timing_budget, 0.1);
 	nh_priv.param("offset", offset, 0.0);
 	nh_priv.param<std::string>("frame_id", range.header.frame_id, "");
@@ -106,7 +109,7 @@ int main(int argc, char **argv)
 		VL53L1_ClearInterruptAndStartMeasurement(&dev);
 
 		// Check measurement for validness
-		if (measurement_data.RangeStatus != VL53L1_RANGESTATUS_RANGE_VALID) {
+		if (!ignore_range_status && measurement_data.RangeStatus != VL53L1_RANGESTATUS_RANGE_VALID) {
 			char range_status[VL53L1_MAX_STRING_LENGTH];
 			VL53L1_get_range_status_string(measurement_data.RangeStatus, range_status);
 			ROS_DEBUG("Range measurement status is not valid: %s", range_status);

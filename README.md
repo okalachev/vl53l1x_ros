@@ -55,6 +55,7 @@ All parameters are optional. Check the [`launch`](https://github.com/okalachev/v
 * `~mode` (*int*) – distance mode, 1 = short, 2 = medium, 3 = long (default: 3).
 * `~timing_budget` (*double*) – timing budget for measurements, *s* (default: 0.1)
 * `~poll_rate` (*double*) – polling data rate, *Hz* (default: 100).
+* `~ignore_range_status` (*bool*) – ignore validness of measurements (default: false).
 * `~offset` (*float*) – offset to be automatically added to measurement value, *m* (default: 0.0).
 * `~frame_id` (*string*) – frame id for output `Range` messages (default: "").
 * `~field_of_view` (*float*) – field of view for output `Range` messages, *rad* (default: 0.471239).
@@ -68,6 +69,8 @@ All parameters are optional. Check the [`launch`](https://github.com/okalachev/v
 * *0.14 s* is the timing budget which allows the maximum distance of *4 m* (in *Long* distance mode).
 
 The resulting measurement rate is *1 / (timing budget + 0.004) Hz*.
+
+Setting `ignore_range_status` to `true` makes the node to ignore `RangeStatus` field of measurements. This may significantly improve maximum distance and rate but affects quality of measurements.
 
 `mode` is one of three distance modes, with the timing budget of *0.1 s*, *Short*, *Medium* and *Long* modes have maximum distances of 136, 290, and 360 cm, respectively.
 

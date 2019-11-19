@@ -4,6 +4,7 @@
         <param name="i2c_bus" value="1"/>
         <param name="i2c_address" value="0x29"/>
         <param name="poll_rate" value="100"/>
+        <param name="ignore_range_status" value="false"/>
         <param name="timing_budget" value="0.1"/>
         <param name="offset" value="0.0"/>
         <param name="frame_id" value=""/>
