@@ -13,12 +13,43 @@
  *
  */
 
+#include <stdio.h>
 #include <string>
 #include <ros/ros.h>
 #include <sensor_msgs/Range.h>
+#include <std_srvs/Trigger.h>
 
 #include "vl53l1_api.h"
 #include "i2c.h"
+
+static VL53L1_Dev_t dev;
+static std::string calibration_path;
+
+bool writeCalibration(const VL53L1_CalibrationData_t& data)
+{
+	auto f = fopen(calibration_path, "wb");
+	bool success = fwrite(&data, sizeof(data), 1, f) == 1;
+	fclose(f);
+	return success;
+}
+
+bool readCalibration(VL53L1_CalibrationData_t& data)
+{
+	auto f = fopen(calibration_path, "rb");
+	bool success = fread(&data, sizeof(data), 1, f) == 1;
+	fclose(f);
+	return success;
+}
+
+bool calibrate(std_srvs::Trigger::Request& req, std_srvs::Trigger::Response& res)
+{
+	VL53L1_PerformRefSpadManagement(&dev);
+	VL53L1_PerformSingleTargetXTalkCalibration(&VL53L1Dev, XtalkCalDistance);
+
+	VL53L1_CalibrationData_t data;
+	VL53L1_GetCalibrationData(&dev, &data);
+	writeCalibration(data);
+}
 
 int main(int argc, char **argv)
 {
@@ -28,6 +59,8 @@ int main(int argc, char **argv)
 	sensor_msgs::Range range;
 	range.radiation_type = sensor_msgs::Range::INFRARED;
 	ros::Publisher range_pub = nh_priv.advertise<sensor_msgs::Range>("range", 20);
+
+	auto cal_service = nh.advertiseService("calibrate", &calibrate);
 
 	// Read parameters
 	int mode, i2c_bus, i2c_address;
@@ -46,6 +79,9 @@ int main(int argc, char **argv)
 	nh_priv.param("min_range", range.min_range, 0.0f);
 	nh_priv.param("max_range", range.max_range, 4.0f);
 
+	std::string default_calibration_path = ros::package::getPath("vl53l1x") + "/data/calibration";
+	nh_priv.param("calibration_path", calibration_path, default_calibration_path);
+
 	if (timing_budget < 0.02 || timing_budget > 1) {
 		ROS_FATAL("Error: timing_budget should be within 0.02 and 1 s (%g is set)", timing_budget);
 		ros::shutdown();
@@ -58,7 +94,6 @@ int main(int argc, char **argv)
 	i2c_setup(i2c_bus, i2c_address);
 
 	// Init sensor
-	VL53L1_Dev_t dev;
 	VL53L1_Error dev_error;
 	VL53L1_software_reset(&dev);
 	VL53L1_WaitDeviceBooted(&dev);

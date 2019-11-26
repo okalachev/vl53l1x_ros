@@ -82,6 +82,10 @@ See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1
 
 * `~range` ([*sensor_msgs/Range*](http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Range.html)) – resulting measurement.
 
+## Calibration
+
+Warning: calibration data file is platform-dependent and cannot be used on a platform different from on which it was created.
+
 ## Copyright
 
 Copyright © 2019 Oleg Kalachev.
