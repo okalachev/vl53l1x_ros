@@ -16,6 +16,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <sensor_msgs/Range.h>
+#include <vl53l1x/MeasurementData.h>
 
 #include "vl53l1_api.h"
 #include "i2c.h"
@@ -26,8 +27,10 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh, nh_priv("~");
 
 	sensor_msgs::Range range;
+	vl53l1x::MeasurementData data;
 	range.radiation_type = sensor_msgs::Range::INFRARED;
 	ros::Publisher range_pub = nh_priv.advertise<sensor_msgs::Range>("range", 20);
+	ros::Publisher data_pub = nh_priv.advertise<vl53l1x::MeasurementData>("data", 20);
 
 	// Read parameters
 	int mode, i2c_bus, i2c_address;
@@ -119,6 +122,16 @@ int main(int argc, char **argv)
 		// Publish measurement
 		range.range = measurement_data.RangeMilliMeter / 1000.0 + offset;
 		range_pub.publish(range);
+
+		// Publish measurement data
+		data.header.stamp = range.header.stamp;
+		data.signal = measurement_data.SignalRateRtnMegaCps / 65536.0;
+		data.ambient = measurement_data.AmbientRateRtnMegaCps / 65536.0;
+		data.effective_spad = measurement_data.EffectiveSpadRtnCount / 256;
+		data.sigma = measurement_data.SigmaMilliMeter / 65536.0 / 1000.0;
+		data.status = measurement_data.RangeStatus;
+		data_pub.publish(data);
+
 		ros::spinOnce();
 	}
 

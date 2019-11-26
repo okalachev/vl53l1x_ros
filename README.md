@@ -81,6 +81,7 @@ See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1
 ### Published
 
 * `~range` ([*sensor_msgs/Range*](http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Range.html)) – resulting measurement.
+* `~data` ([*vl53l1x/MeasurementData*](https://github.com/okalachev/vl53l1x_ros/blob/master/vl53l1x/msg/MeasurementData.msg)) – additional data of the measurement.
 
 ## Copyright
 

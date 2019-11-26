@@ -24,6 +24,8 @@
 
     <depend>roscpp</depend>
     <depend>sensor_msgs</depend>
+    <depend>message_generation</depend>
+    <depend>message_runtime</depend>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
