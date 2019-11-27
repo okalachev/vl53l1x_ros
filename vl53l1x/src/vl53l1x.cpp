@@ -74,6 +74,16 @@ int main(int argc, char **argv)
 	VL53L1_SetDistanceMode(&dev, mode);
 	VL53L1_SetMeasurementTimingBudgetMicroSeconds(&dev, round(timing_budget * 1e6));
 
+	double min_signal;
+	if (nh_priv.getParam("min_signal", min_signal)) {
+		VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, min_signal * 65536);
+	}
+
+	double max_sigma;
+	if (nh_priv.getParam("max_sigma", max_sigma)) {
+		VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGMA_FINAL_RANGE, max_sigma * 1000 * 65536);
+	}
+
 	// Start sensor
 	for (int i = 0; i < 100; i++) {
 		VL53L1_SetInterMeasurementPeriodMilliSeconds(&dev, round(inter_measurement_period * 1e3));
