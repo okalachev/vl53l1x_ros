@@ -10,19 +10,19 @@ uint8 status # status for the current measurement, a value of 0 means the rangin
 
 # Status field meanings:
 
-STATUS_RANGE_VALID = 0 # The Range is valid
-STATUS_SIGMA_FAIL = 1 # Sigma Fail
-STATUS_SIGNAL_FAIL = 2 # Signal fail
-STATUS_RANGE_VALID_MIN_RANGE_CLIPPED = 3 # Target is below minimum detection threshold
-STATUS_OUTOFBOUNDS_FAIL = 4 # Phase out of valid limits - different to a wrap exit
-STATUS_HARDWARE_FAIL = 5 # Hardware fail
-STATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL = 6 # The Range is valid but the wraparound check has not been done
-STATUS_WRAP_TARGET_FAIL = 7 # Wrapped target - no matching phase in other VCSEL period timing
-STATUS_PROCESSING_FAIL = 8 # Internal algo underflow or overflow in lite ranging
-STATUS_XTALK_SIGNAL_FAIL = 9 # Specific to lite ranging
-STATUS_SYNCRONISATION_INT = 10 # 1st interrupt when starting ranging in back to back mode. Ignore data
-STATUS_RANGE_VALID_MERGED_PULSE = 11 # All Range ok but object is result of multiple pulses merging together. Used by RQL for merged pulse detection
-STATUS_TARGET_PRESENT_LACK_OF_SIGNAL = 12 # Used by RQL as different to phase fail
-STATUS_MIN_RANGE_FAIL = 13 # User ROI input is not valid e.g. beyond SPAD Array
-STATUS_RANGE_INVALID = 14 # lld returned valid range but negative value
-STATUS_NONE = 255 # No Update
+uint8 STATUS_RANGE_VALID = 0 # The Range is valid
+uint8 STATUS_SIGMA_FAIL = 1 # Sigma Fail
+uint8 STATUS_SIGNAL_FAIL = 2 # Signal fail
+uint8 STATUS_RANGE_VALID_MIN_RANGE_CLIPPED = 3 # Target is below minimum detection threshold
+uint8 STATUS_OUTOFBOUNDS_FAIL = 4 # Phase out of valid limits - different to a wrap exit
+uint8 STATUS_HARDWARE_FAIL = 5 # Hardware fail
+uint8 STATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL = 6 # The Range is valid but the wraparound check has not been done
+uint8 STATUS_WRAP_TARGET_FAIL = 7 # Wrapped target - no matching phase in other VCSEL period timing
+uint8 STATUS_PROCESSING_FAIL = 8 # Internal algo underflow or overflow in lite ranging
+uint8 STATUS_XTALK_SIGNAL_FAIL = 9 # Specific to lite ranging
+uint8 STATUS_SYNCRONISATION_INT = 10 # 1st interrupt when starting ranging in back to back mode. Ignore data
+uint8 STATUS_RANGE_VALID_MERGED_PULSE = 11 # All Range ok but object is result of multiple pulses merging together. Used by RQL for merged pulse detection
+uint8 STATUS_TARGET_PRESENT_LACK_OF_SIGNAL = 12 # Used by RQL as different to phase fail
+uint8 STATUS_MIN_RANGE_FAIL = 13 # User ROI input is not valid e.g. beyond SPAD Array
+uint8 STATUS_RANGE_INVALID = 14 # lld returned valid range but negative value
+uint8 STATUS_NONE = 255 # No Update
