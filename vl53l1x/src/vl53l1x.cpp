@@ -14,6 +14,7 @@
  */
 
 #include <string>
+#include <vector>
 #include <ros/ros.h>
 #include <sensor_msgs/Range.h>
 #include <vl53l1x/MeasurementData.h>
@@ -36,6 +37,9 @@ int main(int argc, char **argv)
 	int mode, i2c_bus, i2c_address;
 	double poll_rate, timing_budget, offset;
 	bool ignore_range_status;
+	std::vector<int> pass_statuses { VL53L1_RANGESTATUS_RANGE_VALID,
+	                                 VL53L1_RANGESTATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL,
+	                                 VL53L1_RANGESTATUS_RANGE_VALID_MERGED_PULSE };
 
 	nh_priv.param("mode", mode, 3);
 	nh_priv.param("i2c_bus", i2c_bus, 1);
@@ -48,6 +52,7 @@ int main(int argc, char **argv)
 	nh_priv.param("field_of_view", range.field_of_view, 0.471239f); // 27 deg, source: datasheet
 	nh_priv.param("min_range", range.min_range, 0.0f);
 	nh_priv.param("max_range", range.max_range, 4.0f);
+	nh_priv.getParam("pass_statuses", pass_statuses);
 
 	if (timing_budget < 0.02 || timing_budget > 1) {
 		ROS_FATAL("Error: timing_budget should be within 0.02 and 1 s (%g is set)", timing_budget);
@@ -121,7 +126,8 @@ int main(int argc, char **argv)
 		VL53L1_ClearInterruptAndStartMeasurement(&dev);
 
 		// Check measurement for validness
-		if (!ignore_range_status && measurement_data.RangeStatus != VL53L1_RANGESTATUS_RANGE_VALID) {
+		if (!ignore_range_status &&
+		    std::find(pass_statuses.begin(), pass_statuses.end(), measurement_data.RangeStatus) == pass_statuses.end()) {
 			char range_status[VL53L1_MAX_STRING_LENGTH];
 			VL53L1_get_range_status_string(measurement_data.RangeStatus, range_status);
 			ROS_DEBUG("Range measurement status is not valid: %s", range_status);
