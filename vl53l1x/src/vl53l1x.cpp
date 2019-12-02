@@ -22,6 +22,9 @@
 #include "vl53l1_api.h"
 #include "i2c.h"
 
+#define xSTR(x) #x
+#define STR(x) xSTR(x)
+
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "vl53l1x");
@@ -72,6 +75,15 @@ int main(int argc, char **argv)
 	VL53L1_WaitDeviceBooted(&dev);
 	VL53L1_DataInit(&dev);
 	VL53L1_StaticInit(&dev);
+
+	// Print device info
+	VL53L1_DeviceInfo_t device_info;
+	VL53L1_GetDeviceInfo(&dev, &device_info);
+	ROS_INFO("VL53L1X: Device name: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.Name);
+	ROS_INFO("VL53L1X: Device type: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.Type);
+	ROS_INFO("VL53L1X: Product ID: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.ProductId);
+	ROS_INFO("VL53L1X: Type: %u Version: %u.%u", device_info.ProductType,
+	          device_info.ProductRevisionMajor, device_info.ProductRevisionMinor);
 
 	// Setup sensor
 	VL53L1_SetXTalkCompensationEnable(&dev, 0); // Disable crosstalk compensation
