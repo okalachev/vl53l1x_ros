@@ -76,6 +76,8 @@ Setting `ignore_range_status` to `true` makes the node to ignore `RangeStatus` f
 
 `mode` is one of three distance modes, with the timing budget of *0.1 s*, *Short*, *Medium* and *Long* modes have maximum distances of 136, 290, and 360 cm, respectively.
 
+`~min_range` and `~max_range` don't affect any device settings and only define `min_range` and `max_range` values of the output [`Range`](http://docs.ros.org/melodic/api/sensor_msgs/html/msg/Range.html) messages.
+
 See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1x.pdf) for more information on mode and timing budget.
 
 ## Topics
