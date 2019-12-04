@@ -143,6 +143,15 @@ int main(int argc, char **argv)
 		VL53L1_GetRangingMeasurementData(&dev, &measurement_data);
 		VL53L1_ClearInterruptAndStartMeasurement(&dev);
 
+		// Publish measurement data
+		data.header.stamp = range.header.stamp;
+		data.signal = measurement_data.SignalRateRtnMegaCps / 65536.0;
+		data.ambient = measurement_data.AmbientRateRtnMegaCps / 65536.0;
+		data.effective_spad = measurement_data.EffectiveSpadRtnCount / 256;
+		data.sigma = measurement_data.SigmaMilliMeter / 65536.0 / 1000.0;
+		data.status = measurement_data.RangeStatus;
+		data_pub.publish(data);
+
 		// Check measurement for validness
 		if (!ignore_range_status &&
 		    std::find(pass_statuses.begin(), pass_statuses.end(), measurement_data.RangeStatus) == pass_statuses.end()) {
@@ -156,15 +165,6 @@ int main(int argc, char **argv)
 		// Publish measurement
 		range.range = measurement_data.RangeMilliMeter / 1000.0 + offset;
 		range_pub.publish(range);
-
-		// Publish measurement data
-		data.header.stamp = range.header.stamp;
-		data.signal = measurement_data.SignalRateRtnMegaCps / 65536.0;
-		data.ambient = measurement_data.AmbientRateRtnMegaCps / 65536.0;
-		data.effective_spad = measurement_data.EffectiveSpadRtnCount / 256;
-		data.sigma = measurement_data.SigmaMilliMeter / 65536.0 / 1000.0;
-		data.status = measurement_data.RangeStatus;
-		data_pub.publish(data);
 
 		ros::spinOnce();
 	}
