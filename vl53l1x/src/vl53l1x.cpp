@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 	VL53L1_WaitDeviceBooted(&dev);
 	VL53L1_DataInit(&dev);
 	VL53L1_StaticInit(&dev);
+	VL53L1_SetPresetMode(&dev, VL53L1_PRESETMODE_AUTONOMOUS);
 
 	// Print device info
 	VL53L1_DeviceInfo_t device_info;
