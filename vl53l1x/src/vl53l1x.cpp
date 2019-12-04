@@ -86,8 +86,6 @@ int main(int argc, char **argv)
 	          device_info.ProductRevisionMajor, device_info.ProductRevisionMinor);
 
 	// Setup sensor
-	VL53L1_SetXTalkCompensationEnable(&dev, 0); // Disable crosstalk compensation
-	VL53L1_SetDeviceAddress(&dev, i2c_address << 1);
 	VL53L1_SetDistanceMode(&dev, mode);
 	VL53L1_SetMeasurementTimingBudgetMicroSeconds(&dev, round(timing_budget * 1e6));
 
