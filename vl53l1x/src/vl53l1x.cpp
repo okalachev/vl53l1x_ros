@@ -25,6 +25,13 @@
 #define xSTR(x) #x
 #define STR(x) xSTR(x)
 
+#define CHECK_STATUS(func) { \
+	VL53L1_Error status = func; \
+	if (status != VL53L1_ERROR_NONE) { \
+		ROS_WARN("VL53L1X: Error %d on %s", status, STR(func)); \
+	} \
+}
+
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "vl53l1x");
@@ -79,7 +86,7 @@ int main(int argc, char **argv)
 
 	// Print device info
 	VL53L1_DeviceInfo_t device_info;
-	VL53L1_GetDeviceInfo(&dev, &device_info);
+	CHECK_STATUS(VL53L1_GetDeviceInfo(&dev, &device_info));
 	ROS_INFO("VL53L1X: Device name: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.Name);
 	ROS_INFO("VL53L1X: Device type: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.Type);
 	ROS_INFO("VL53L1X: Product ID: %." STR(VL53L1_DEVINFO_STRLEN) "s", device_info.ProductId);
@@ -87,22 +94,22 @@ int main(int argc, char **argv)
 	          device_info.ProductRevisionMajor, device_info.ProductRevisionMinor);
 
 	// Setup sensor
-	VL53L1_SetDistanceMode(&dev, mode);
-	VL53L1_SetMeasurementTimingBudgetMicroSeconds(&dev, round(timing_budget * 1e6));
+	CHECK_STATUS(VL53L1_SetDistanceMode(&dev, mode));
+	CHECK_STATUS(VL53L1_SetMeasurementTimingBudgetMicroSeconds(&dev, round(timing_budget * 1e6)));
 
 	double min_signal;
 	if (nh_priv.getParam("min_signal", min_signal)) {
-		VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, min_signal * 65536);
+		CHECK_STATUS(VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, min_signal * 65536));
 	}
 
 	double max_sigma;
 	if (nh_priv.getParam("max_sigma", max_sigma)) {
-		VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGMA_FINAL_RANGE, max_sigma * 1000 * 65536);
+		CHECK_STATUS(VL53L1_SetLimitCheckValue(&dev, VL53L1_CHECKENABLE_SIGMA_FINAL_RANGE, max_sigma * 1000 * 65536));
 	}
 
 	// Start sensor
 	for (int i = 0; i < 100; i++) {
-		VL53L1_SetInterMeasurementPeriodMilliSeconds(&dev, round(inter_measurement_period * 1e3));
+		CHECK_STATUS(VL53L1_SetInterMeasurementPeriodMilliSeconds(&dev, round(inter_measurement_period * 1e3)));
 		dev_error = VL53L1_StartMeasurement(&dev);
 		if (dev_error == VL53L1_ERROR_INVALID_PARAMS) {
 			inter_measurement_period += 0.001; // Increase inter_measurement_period to satisfy condition (*)
