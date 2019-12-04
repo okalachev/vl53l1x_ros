@@ -39,16 +39,15 @@ int main(int argc, char **argv)
 	// Read parameters
 	int mode, i2c_bus, i2c_address;
 	double poll_rate, timing_budget, offset;
-	bool ignore_range_status;
 	std::vector<int> pass_statuses { VL53L1_RANGESTATUS_RANGE_VALID,
-	                                 VL53L1_RANGESTATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL,
-	                                 VL53L1_RANGESTATUS_RANGE_VALID_MERGED_PULSE };
+									 VL53L1_RANGESTATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL,
+									 VL53L1_RANGESTATUS_RANGE_VALID_MERGED_PULSE,
+									 VL53L1_RANGESTATUS_WRAP_TARGET_FAIL};
 
 	nh_priv.param("mode", mode, 3);
 	nh_priv.param("i2c_bus", i2c_bus, 1);
 	nh_priv.param("i2c_address", i2c_address, 0x29);
 	nh_priv.param("poll_rate", poll_rate, 100.0);
-	nh_priv.param("ignore_range_status", ignore_range_status, false);
 	nh_priv.param("timing_budget", timing_budget, 0.1);
 	nh_priv.param("offset", offset, 0.0);
 	nh_priv.param<std::string>("frame_id", range.header.frame_id, "");
@@ -137,8 +136,17 @@ int main(int argc, char **argv)
 		VL53L1_GetRangingMeasurementData(&dev, &measurement_data);
 		VL53L1_ClearInterruptAndStartMeasurement(&dev);
 
+		// Publish measurement data
+		data.header.stamp = range.header.stamp;
+		data.signal = measurement_data.SignalRateRtnMegaCps / 65536.0;
+		data.ambient = measurement_data.AmbientRateRtnMegaCps / 65536.0;
+		data.effective_spad = measurement_data.EffectiveSpadRtnCount / 256;
+		data.sigma = measurement_data.SigmaMilliMeter / 65536.0 / 1000.0;
+		data.status = measurement_data.RangeStatus;
+		data_pub.publish(data);
+
 		// Check measurement for validness
-		if (!ignore_range_status &&
+		if (pass_statuses.size() != 0 &&
 		    std::find(pass_statuses.begin(), pass_statuses.end(), measurement_data.RangeStatus) == pass_statuses.end()) {
 			char range_status[VL53L1_MAX_STRING_LENGTH];
 			VL53L1_get_range_status_string(measurement_data.RangeStatus, range_status);
@@ -150,15 +158,6 @@ int main(int argc, char **argv)
 		// Publish measurement
 		range.range = measurement_data.RangeMilliMeter / 1000.0 + offset;
 		range_pub.publish(range);
-
-		// Publish measurement data
-		data.header.stamp = range.header.stamp;
-		data.signal = measurement_data.SignalRateRtnMegaCps / 65536.0;
-		data.ambient = measurement_data.AmbientRateRtnMegaCps / 65536.0;
-		data.effective_spad = measurement_data.EffectiveSpadRtnCount / 256;
-		data.sigma = measurement_data.SigmaMilliMeter / 65536.0 / 1000.0;
-		data.status = measurement_data.RangeStatus;
-		data_pub.publish(data);
 
 		ros::spinOnce();
 	}
