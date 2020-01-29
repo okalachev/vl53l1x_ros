@@ -4,6 +4,12 @@ This is STM [VL53L1X](https://www.st.com/en/imaging-and-photonics-solutions/vl53
 
 The code is based on the [STM VL53L1X API library](https://www.st.com/content/st_com/en/products/embedded-software/proximity-sensors-software/stsw-img007.html).
 
+## Connecting
+
+Example of I²C connecting VL53L1X module to Raspberry Pi:
+
+<img src="raspberry-vl53l1x.png" width=500>
+
 ## Installation
 
 ### From package
