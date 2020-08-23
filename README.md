@@ -1,6 +1,6 @@
 # vl53l1x_ros
 
-This is STM [VL53L1X](https://www.st.com/en/imaging-and-photonics-solutions/vl53l1x.html) time-of-flight rangefinder driver for ROS. Tested on a Raspberry Pi 3 with [CJMCU-531](https://ru.aliexpress.com/item/VL53L1X/32911692450.html) board.
+This is STM [VL53L1X](https://www.st.com/en/imaging-and-photonics-solutions/vl53l1x.html) time-of-flight rangefinder driver for ROS. Tested on a Raspberry Pi 3 and 4 with [CJMCU-531](https://ru.aliexpress.com/item/VL53L1X/32911692450.html) board.
 
 The code is based on the [STM VL53L1X API library](https://www.st.com/content/st_com/en/products/embedded-software/proximity-sensors-software/stsw-img007.html).
 
