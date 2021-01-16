@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>vl53l1x</name>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
   <description>VL53L1X ToF rangefinder driver</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
