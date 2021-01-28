@@ -3,9 +3,7 @@
  *
  * Author: Oleg Kalachev <okalachev@gmail.com>
  *
- * Distributed under MIT License (available at https://opensource.org/licenses/MIT).
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * Distributed under BSD 3-Clause License (available at https://opensource.org/licenses/BSD-3-Clause).
  *
  * Documentation used:
  * VL53L1X datasheet - https://www.st.com/resource/en/datasheet/vl53l1x.pdf

@@ -97,4 +97,4 @@ See the [official documentation](https://www.st.com/resource/en/datasheet/vl53l1
 
 Copyright © 2019 Oleg Kalachev.
 
-Distributed under MIT License (https://opensource.org/licenses/MIT).
+Distributed under BSD 3-Clause License (https://opensource.org/licenses/BSD-3-Clause).
