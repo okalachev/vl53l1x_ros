@@ -2,8 +2,8 @@
 Changelog for package vl53l1x
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2021-01-28)
+------------------
 * Change licence to BSD-3-Clause
 
 0.4.1 (2021-01-16)
