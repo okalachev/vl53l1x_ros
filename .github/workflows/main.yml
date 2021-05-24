@@ -30,4 +30,9 @@ jobs:
         env:
           NATIVE_DOCKER: ros:melodic-ros-base
         run: |
-          docker run --rm -v $(pwd):/root/catkin_ws/src/vl53l1x_ros ${NATIVE_DOCKER} /bin/bash -c "cd /root/catkin_ws && catkin_make"
+          docker run --rm -v $(pwd):/root/catkin_ws/src/vl53l1x_ros ${NATIVE_DOCKER} /bin/bash -c \
+          "cd /root/catkin_ws && \
+          rosdep install --from-paths src --ignore-src -y && \
+          catkin_make \
+          catkin_make run_tests && catkin_test_results \
+          catkin_make install"
