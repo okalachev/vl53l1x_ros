@@ -30,4 +30,4 @@ jobs:
         env:
           NATIVE_DOCKER: ros:melodic-ros-base
         run: |
-          docker run --rm -v $(pwd):/root/catkin_ws/src/vl53l1x_ros ${NATIVE_DOCKER} /bin/bash -c "echo test"
+          docker run --rm -v $(pwd):/root/catkin_ws/src/vl53l1x_ros ${NATIVE_DOCKER} /bin/bash -c "cd catkin_ws; catkin_make"
