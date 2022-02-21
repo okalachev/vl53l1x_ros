@@ -14,7 +14,7 @@ Example of I²C connecting VL53L1X module to Raspberry Pi:
 
 ### From package
 
-For Raspberry Pi, there exist prebuilt Debian packages. For installation, [get the package](http://coex.space/rpi-ros-kinetic/pool/main/r/ros-kinetic-vl53l1x/) to the Raspberry and install it with `dpkg -i <package-name>.deb`.
+For Raspberry Pi, there exist prebuilt Debian packages. For installation, get the package ([Noetic](http://packages.coex.tech/packages/buster/ros-noetic-vl53l1x/), [Melodic](http://coex.space/rpi-ros-melodic/pool/main/r/ros-melodic-vl53l1x/), [Kinetic](http://coex.space/rpi-ros-kinetic/pool/main/r/ros-kinetic-vl53l1x/)) to the Raspberry and install it with `dpkg -i <package-name>.deb`.
 
 ### Manual
 
