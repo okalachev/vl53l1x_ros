@@ -62,6 +62,7 @@ All parameters are optional. Check the [`launch`](https://github.com/okalachev/v
 * `~timing_budget` (*double*) – timing budget for measurements, *s* (default: 0.1)
 * `~poll_rate` (*double*) – polling data rate, *Hz* (default: 100).
 * `~ignore_range_status` (*bool*) – ignore validness of measurements (default: false).
+* `~pass_statuses` (*array of int*) – measurement [statuses](vl53l1x/msg/MeasurementData.msg#L13), that considered valid (default: [0, 6, 11]).
 * `~min_signal` (*double*) – minimum amplitude of the signal reflected from the target to be considered valid, *MCPS* (default: 1).
 * `~max_sigma` (*double*) – maximum standard deviation of the measurement to be considered valid, *m* (default: 0.015).
 * `~offset` (*float*) – offset to be automatically added to measurement value, *m* (default: 0.0).
