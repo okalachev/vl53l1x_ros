@@ -15,6 +15,7 @@
 #include <vector>
 #include <ros/ros.h>
 #include <sensor_msgs/Range.h>
+#include <std_msgs/Empty.h>
 #include <vl53l1x/MeasurementData.h>
 
 #include "vl53l1_api.h"
@@ -45,6 +46,7 @@ int main(int argc, char **argv)
 	int mode, i2c_bus, i2c_address;
 	double poll_rate, timing_budget, offset;
 	bool ignore_range_status;
+	int multiple_address, multiple_order;
 	std::vector<int> pass_statuses { VL53L1_RANGESTATUS_RANGE_VALID,
 	                                 VL53L1_RANGESTATUS_RANGE_VALID_NO_WRAP_CHECK_FAIL,
 	                                 VL53L1_RANGESTATUS_RANGE_VALID_MERGED_PULSE };
@@ -60,6 +62,8 @@ int main(int argc, char **argv)
 	nh_priv.param("field_of_view", range.field_of_view, 0.471239f); // 27 deg, source: datasheet
 	nh_priv.param("min_range", range.min_range, 0.0f);
 	nh_priv.param("max_range", range.max_range, 4.0f);
+	nh_priv.param("multiple_address", multiple_address, -1);
+	nh_priv.param("multiple_order", multiple_order, 0);
 	nh_priv.getParam("pass_statuses", pass_statuses);
 
 	if (timing_budget < 0.02 || timing_budget > 1) {
@@ -78,6 +82,26 @@ int main(int argc, char **argv)
 	VL53L1_Error dev_error;
 	VL53L1_software_reset(&dev);
 	VL53L1_WaitDeviceBooted(&dev);
+
+	// Setup multiple sensors
+	if (multiple_address > 0) {
+		// Wait until our order
+		if (multiple_order > 1) { // if we're not the first
+			ROS_INFO("VL53L1X: waiting for order %d", multiple_order);
+			auto msg = ros::topic::waitForMessage<std_msgs::Empty>(std::string("vl53l1x_order/") + std::to_string(multiple_order - 1), ros::Duration(60.0));
+			if (msg == NULL) {
+				ROS_FATAL("VL53L1X: timeout waiting for order");
+				ros::shutdown();
+			}
+		}
+
+		VL53L1_SetDeviceAddress(&dev, multiple_address);
+		i2c_changeAddress(multiple_address);
+		ros::Publisher order_pub = nh.advertise<std_msgs::Empty>("vl53l1x_order", 1, true);
+		std_msgs::Empty msg;
+		order_pub.publish(msg);
+	}
+
 	VL53L1_DataInit(&dev);
 	VL53L1_StaticInit(&dev);
 	VL53L1_SetPresetMode(&dev, VL53L1_PRESETMODE_AUTONOMOUS);

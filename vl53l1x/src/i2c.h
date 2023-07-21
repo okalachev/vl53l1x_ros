@@ -12,6 +12,8 @@ void i2c_setup(uint8_t bus, uint8_t addr);
 
 void i2c_release();
 
+void i2c_changeAddress(uint8_t addr);
+
 EXTERNC bool i2c_readRegisterMulti(uint16_t reg, size_t count, void *pdata);
 
 EXTERNC bool i2c_readRegisterByte(int reg, uint8_t *pdata);

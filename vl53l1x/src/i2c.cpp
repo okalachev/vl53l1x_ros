@@ -33,6 +33,15 @@ void i2c_release()
 	close(fd);
 }
 
+void i2c_changeAddress(uint8_t addr)
+{
+	int rc = ioctl(fd, I2C_SLAVE, addr);
+	if (rc < 0) {
+		ROS_FATAL("Failed to change I2C address to 0x%02x", addr);
+		ros::shutdown();
+	}
+}
+
 bool i2c_readRegisterMulti(uint16_t reg, size_t count, void *pdata)
 {
 	reg = htons(reg); // little endian to big endian
